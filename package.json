@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/jovyllebermudez/serverless-function1/issues"
   },
-  "homepage": "https://github.com/jovyllebermudez/serverless-function1#readme"
+  "homepage": "https://github.com/jovyllebermudez/serverless-function1#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "openai": "^4.10.0",
+    "uuid": "^9.0.1"
+  }
 }
