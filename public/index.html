@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<!-- test changes 22-->
 <head>
   <title>Chat App</title>
   <style>
@@ -64,25 +64,34 @@
   <button id="send-button">Send</button>
 
   <script>
+    // Initialize an array to store messages
+    const messageHistory = [];
+
     document.getElementById('send-button').addEventListener('click', function () {
       const userInput = document.getElementById('user-input');
       const chatBox = document.getElementById('chat-box');
 
-      // Append user's message to chat box
-      chatBox.innerHTML += '<div class="user-message">User: ' + userInput.value + '</div>';
+      // Append user's message to chat box and add it to the messageHistory array
+      const userMessage = 'User: ' + userInput.value;
+      chatBox.innerHTML += '<div class="user-message">' + userMessage + '</div>';
+      messageHistory.push({ role: "user", content: userMessage });
 
-      // Call serverless function
+      // Call serverless function with the message history
       fetch('/.netlify/functions/chat', {
         method: 'POST',
-        body: JSON.stringify({ message: userInput.value }),
+        body: JSON.stringify({ message: userInput.value, history: messageHistory }),
         headers: { 'Content-Type': 'application/json' }
       })
         .then(response => response.json())
         .then(data => {
-          // Append AI's response to chat box
-          chatBox.innerHTML += '<div class="ai-message">AI: ' + data.message + '</div>';
+          // Append AI's response to chat box and add it to the messageHistory array
+          const aiMessage = 'AI: ' + data.message;
+          chatBox.innerHTML += '<div class="ai-message">' + aiMessage + '</div>';
+          messageHistory.push({ role: "assistant", content: aiMessage });
+          console.log("messageHistory")
+          console.log(messageHistory)
         });
-
+      console.log("Clear user input")
       // Clear user input
       userInput.value = '';
     });
