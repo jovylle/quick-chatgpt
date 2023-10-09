@@ -9,7 +9,8 @@ exports.handler = async function (event, context) {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const { message } = JSON.parse(event.body);
+  // const { message } = JSON.parse(event.body);
+  const { history } = JSON.parse(event.body);
 
   const gptResponse = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo-16k',
@@ -19,10 +20,7 @@ exports.handler = async function (event, context) {
         role: 'system',
         content: 'You are a helpful assistant.'
       },
-      {
-        role: 'user',
-        content: message
-      },
+      ...history
     ]
   });
 
