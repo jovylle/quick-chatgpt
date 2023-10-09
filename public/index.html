@@ -200,7 +200,6 @@
     const chatBox = document.getElementById('chat-box');
     const placeholderMessage = document.querySelector('.placeholder-message');
     const sendButton = document.getElementById('send-button');
-    const loadingIndicator = document.querySelector('.loading-message');
 
     function sendMessageHandler () {
       // Hide the placeholder message when the user sends the first message
@@ -211,7 +210,6 @@
       // Disable the send button and show loading indicator during sending
       sendButton.disabled = true;
       sendButton.style.readonly = true;
-      loadingIndicator.style.display = 'block';
 
       const userMessage = 'User: ' + userInput.value;
       chatBox.innerHTML += '<div class="message user-message">' + userMessage + '</div>';
@@ -230,16 +228,17 @@
           const aiMessage = 'AI: ' + data.message;
 
           const loadingYet = document.querySelector('.loading-yet');
-          loadingYet.innerHTML = aiMessage;
+          loadingYet.textContent = aiMessage;
           loadingYet.classList.remove('loading-yet');
           messageHistory.push({ role: "assistant", content: aiMessage });
 
+          Prism.highlightAll();
           // Clear user input and re-enable the send button
           sendButton.disabled = false;
           sendButton.style.readonly = false;
-          loadingIndicator.style.display = 'none';
           // Scroll the chat box to the bottom
           scrollToBottom();
+          
         });
     }
 
@@ -257,6 +256,8 @@
     });
 
   </script>
+  <link rel="stylesheet" href="prism.css">
+  <script src="prism.js"></script>
 </body>
 
 </html>
