@@ -2,9 +2,8 @@
 <html id="thehtml">
 
 <head>
-  <title>Chat App</title>
+  <title>QuickGPT</title>
   <style>
-    
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -83,7 +82,7 @@
       border-top: 1px solid #ddd;
       justify-content: center;
       padding-bottom: 35px;
-      
+
     }
 
     #user-input {
@@ -122,15 +121,64 @@
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Style for the info button */
+    .info-button {
+      display: inline-block;
+      /* background-color: #007BFF; */
+      /* background-color: #fff; */
+      /* color: #fff; */
+      color: #333;
+      border: none;
+      border-radius: 50%;
+      border: 1px solid #333;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 10px;
+      height: 18px;
+      width: 18px;
+      padding: 2px;
+    }
+
+    /* Style for the info panel */
+    .info-panel {
+      text-align: left;
+      display: none;
+      background-color: #fff;
+      color: #333;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-top: 10px;
+      position: absolute;
+      left: 40%;
+      z-index: 1;
+      top: 32px;
+    }
+
+    /* Hover effect to show the info panel */
+    .info-button:hover+.info-panel,.info-panel:hover {
+      display: block;
     }
   </style>
 </head>
 
 <body>
   <div class="chat-container">
-    <div class="chat-header">Chat App</div>
+    <div class="chat-header"><span>Ask Right Away!</span> <div class="info-button">i</div>
+      <div class="info-panel">
+        <p>ChatGPT of OpenAI Model 3.5</p>
+        <p>github link:<a href="https://github.com/jovyllebermudez/quick-chatgpt">quick-chatgpt</a></p>
+      </div>
+    </div>
     <div class="chat-wrapper">
       <div class="chat-messages" id="chat-box">
         <!-- content -->
@@ -154,7 +202,7 @@
     const sendButton = document.getElementById('send-button');
     const loadingIndicator = document.querySelector('.loading-message');
 
-    function sendMessageHandler() {
+    function sendMessageHandler () {
       // Hide the placeholder message when the user sends the first message
       if (placeholderMessage.style.display !== 'none') {
         placeholderMessage.style.display = 'none';
@@ -199,7 +247,7 @@
       const thehtml = document.getElementById('thehtml');
       thehtml.scrollTop = thehtml.scrollHeight;
     }
-    
+
     sendButton.addEventListener('click', sendMessageHandler);
     userInput.addEventListener('keyup', function (event) {
       const sendButton = document.getElementById('send-button');
