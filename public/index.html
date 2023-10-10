@@ -217,21 +217,28 @@
 
       // Disable the send button and show loading indicator during sending
       sendButton.disabled = true;
-      sendButton.style.readonly = true;
+      sendButton.style.opacity = 0
+
 
       const userMessage = userInput.value;
       chatBox.innerHTML += '<div class="message user-message">' + userMessage + '</div>';
       chatBox.innerHTML += '<div class="message ai-message loading-yet"></div>';
       scrollToBottom();
-      messageHistory.push({ role: "user", content: userMessage });
       userInput.value = '';
 
       fetch('/.netlify/functions/chat', {
         method: 'POST',
-        body: JSON.stringify({ message: userInput.value, history: messageHistory }),
+        body: JSON.stringify({ message: userMessage, history: messageHistory }),
         headers: { 'Content-Type': 'application/json' }
       })
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            // If the response status indicates an error, handle it here
+            throw new Error('HTTP Error: ' + response.statusText);
+          }
+          // If the response is OK (status 200), continue parsing as JSON
+          return response.json();
+        })
         .then(data => {
           let aiMessage = data.message;
           aiMessage = escapeHtml(aiMessage);
@@ -239,15 +246,29 @@
           aiMessage = formatAndDisplayResponse(aiMessage);
 
           const loadingYet = document.querySelector('.loading-yet');
-          // loadingYet.textContent = aiMessage;
           loadingYet.innerHTML = aiMessage;
           loadingYet.classList.remove('loading-yet');
+          messageHistory.push({ role: "user", content: userMessage });
           messageHistory.push({ role: "assistant", content: aiMessage });
 
           // Prism.highlightAll();
           // Clear user input and re-enable the send button
           sendButton.disabled = false;
-          sendButton.style.readonly = false;
+          sendButton.style.opacity = 1;
+          // Scroll the chat box to the bottom
+          scrollToBottom();
+        })
+        .catch(error => {
+          // Handle any errors that occurred in the promise chain
+          console.error('An error occurred:', error.message);
+          const loadingYet = document.querySelector('.loading-yet');
+          loadingYet.innerHTML = "Sorry, having trouble connecting to the APIs. Please try again."
+          loadingYet.classList.remove('loading-yet');
+
+          // Prism.highlightAll();
+          // Clear user input and re-enable the send button
+          sendButton.disabled = false;
+          sendButton.style.opacity = 1;
           // Scroll the chat box to the bottom
           scrollToBottom();
         });
@@ -261,7 +282,7 @@
       // Set the formatted response in the HTML
       return formattedResponse;
     }
-    
+
     function escapeHtml (html) {
       const htmlEntities = {
         '&': '&amp;',
