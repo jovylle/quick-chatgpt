@@ -1,1 +1,1 @@
-![image](https://github.com/jovyllebermudez/quick-chatgpt/assets/73716444/d3b8ea51-c63f-4a44-8fe8-d8d7ea183e9e)
+![image](https://github.com/jovyllebermudez/quick-chatgpt/assets/73716444/6195e805-d8a3-4614-b4a8-a8a32165f624)
