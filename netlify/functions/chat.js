@@ -25,7 +25,7 @@ exports.handler = async function (event, context) {
   });
 
   console.log("hohoo")
-  console.log(gptResponse.choices[0].message)
+  console.log(gptResponse.choices)
 
   return {
     statusCode: 200,

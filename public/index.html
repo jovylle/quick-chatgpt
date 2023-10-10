@@ -35,6 +35,9 @@
       font-size: 24px;
       font-weight: bold;
       border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .chat-wrapper {
@@ -141,11 +144,14 @@
       border-radius: 50%;
       border: 1px solid #333;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
       margin-left: 10px;
       height: 18px;
       width: 18px;
-      padding: 2px;
+      padding: 0px 1px;
+      padding-top: 0px;
+      padding-bottom: 2px;
+      font-family: 'Times New Roman', Times, serif;
     }
 
     /* Style for the info panel */
@@ -161,11 +167,12 @@
       position: absolute;
       left: 40%;
       z-index: 1;
-      top: 32px;
+      top: 30px;
     }
 
     /* Hover effect to show the info panel */
-    .info-button:hover+.info-panel,.info-panel:hover {
+    .info-button:hover+.info-panel,
+    .info-panel:hover {
       display: block;
     }
   </style>
@@ -173,7 +180,8 @@
 
 <body>
   <div class="chat-container">
-    <div class="chat-header"><span>Ask Right Away!</span> <div class="info-button">i</div>
+    <div class="chat-header"><span>Ask Right Away!</span>
+      <div class="info-button">i</div>
       <div class="info-panel">
         <p>ChatGPT of OpenAI Model 3.5</p>
         <p>github link:<a href="https://github.com/jovyllebermudez/quick-chatgpt">quick-chatgpt</a></p>
@@ -211,7 +219,7 @@
       sendButton.disabled = true;
       sendButton.style.readonly = true;
 
-      const userMessage = 'User: ' + userInput.value;
+      const userMessage = userInput.value;
       chatBox.innerHTML += '<div class="message user-message">' + userMessage + '</div>';
       chatBox.innerHTML += '<div class="message ai-message loading-yet"></div>';
       scrollToBottom();
@@ -225,21 +233,50 @@
       })
         .then(response => response.json())
         .then(data => {
-          const aiMessage = 'AI: ' + data.message;
+          let aiMessage = data.message;
+          aiMessage = escapeHtml(aiMessage);
+          aiMessage = replaceNewlinesWithBreaks(aiMessage);
+          aiMessage = formatAndDisplayResponse(aiMessage);
 
           const loadingYet = document.querySelector('.loading-yet');
-          loadingYet.textContent = aiMessage;
+          // loadingYet.textContent = aiMessage;
+          loadingYet.innerHTML = aiMessage;
           loadingYet.classList.remove('loading-yet');
           messageHistory.push({ role: "assistant", content: aiMessage });
 
-          Prism.highlightAll();
+          // Prism.highlightAll();
           // Clear user input and re-enable the send button
           sendButton.disabled = false;
           sendButton.style.readonly = false;
           // Scroll the chat box to the bottom
           scrollToBottom();
-          
         });
+    }
+
+    // Function to format code blocks and display the API response
+    function formatAndDisplayResponse (response) {
+      // Replace triple backticks with <pre> elements for code blocks
+      const formattedResponse = response.replace(/```(\w+)?([\s\S]+?)```/g, '<pre class="language-$1">$2</pre>');
+
+      // Set the formatted response in the HTML
+      return formattedResponse;
+    }
+    
+    function escapeHtml (html) {
+      const htmlEntities = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      };
+
+      return html.replace(/[&<>"']/g, (char) => htmlEntities[char]);
+    }
+    function replaceNewlinesWithBreaks (inputString) {
+      // Use the replace method with a regular expression to replace \n with <br>
+      var replacedString = inputString.replace(/\n/g, '<br>');
+      return replacedString;
     }
 
     function scrollToBottom () {
@@ -256,8 +293,8 @@
     });
 
   </script>
-  <link rel="stylesheet" href="prism.css">
-  <script src="prism.js"></script>
+  <!-- <link rel="stylesheet" href="prism.css">
+  <script src="prism.js"></script> -->
 </body>
 
 </html>
