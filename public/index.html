@@ -250,7 +250,7 @@
           loadingYet.classList.remove('loading-yet');
           messageHistory.push({ role: "user", content: userMessage });
           messageHistory.push({ role: "assistant", content: aiMessage });
-
+          fetch('https://asia-east1-project-402218.cloudfunctions.net/do_notion_row?name=quickchatgpt')
           // Prism.highlightAll();
           // Clear user input and re-enable the send button
           sendButton.disabled = false;
