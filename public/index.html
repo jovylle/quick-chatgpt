@@ -226,7 +226,7 @@
       scrollToBottom();
       userInput.value = '';
 
-      fetch('/.netlify/functions/chat', {
+      fetch('https://asia-east1-project-402218.cloudfunctions.net/chat', {
         method: 'POST',
         body: JSON.stringify({ message: userMessage, history: messageHistory }),
         headers: { 'Content-Type': 'application/json' }
