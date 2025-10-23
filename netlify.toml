@@ -10,8 +10,7 @@
 
 # Function configuration
 [functions]
-  # Increase timeout for OpenAI API calls
-  timeout = 10
+  # Functions will use default timeout (10s)
 
 # Redirect rules for SPA behavior
 [[redirects]]
