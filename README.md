@@ -1,3 +1,5 @@
+# NEW VERSION MOVED TO https://github.com/jovylle/chat
+
 # QuickGPT
 
 A fast, modern AI chat interface with markdown support, dark/light theme, and Netlify serverless backend (OpenAI GPT-3.5).
